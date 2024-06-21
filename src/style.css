@@ -1,0 +1,129 @@
+@font-face {
+  font-family: "DMSans";
+  src: url("./assets/DMSans-Regular.ttf");
+  font-style: normal;
+  font-weight: 200;
+}
+:root {
+  --primary-color: rgb(35, 35, 39);
+  --secondary-color: rgb(244, 53, 149);
+  --third-color: rgb(0, 0, 0);
+  --fourth-color: rgb(239, 164, 201);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "DMSans", sans-serif;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+  display: grid;
+  grid-template-columns: max-content 4fr;
+  grid-template-rows: min-content 83% min-content;
+  min-height: 100vh;
+}
+header,
+footer {
+  display: grid;
+  background-color: var(--third-color);
+  height: 80px;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+header {
+  grid-template-columns: 1fr 4fr 1fr;
+  border-bottom: 2px solid var(--secondary-color);
+  padding: 0 15px;
+}
+header > i {
+  font-size: 2.5rem;
+}
+#nav-bars {
+  cursor: pointer;
+  width: min-content;
+  padding: 5px 15px;
+}
+#nav-bars:hover {
+  color: var(--fourth-color);
+}
+#add-task {
+  padding: 5px 15px;
+  justify-self: end;
+}
+#add-task:hover {
+  color: var(--fourth-color);
+}
+footer {
+  align-self: end;
+  text-align: center;
+  grid-row: 3;
+}
+nav {
+  grid-row: 2;
+  border-right: 1px solid var(--third-color);
+}
+ul {
+  list-style: none;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 20px;
+}
+li {
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 3px;
+  border-radius: 5px;
+  border-bottom: 2px solid transparent;
+  color: var(--fourth-color);
+}
+li:hover {
+  border-bottom: 2px solid var(--secondary-color);
+  background-color: rgba(212, 164, 188, 0.599);
+  color: var(--third-color);
+}
+button {
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+  border: 1px solid var(--secondary-color);
+  padding: 5px 15px;
+  border-radius: 15px;
+  transition: 0.4s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover {
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+}
+#title {
+  text-align: center;
+  color: var(--fourth-color);
+}
+#gh-link {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 800;
+}
+#gh-link:hover {
+  color: var(--fourth-color);
+}
+#content {
+  padding: 15px;
+}
+.hidden {
+  display: none;
+}
+i {
+  color: var(--secondary-color);
+}
