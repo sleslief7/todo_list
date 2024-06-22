@@ -12,3 +12,15 @@ function changeTitle(currentTab) {
   title.textContent = "";
   title.textContent = currentTab;
 }
+
+const addTask = document.getElementById("add-task");
+const modal = document.getElementById("modal");
+
+addTask.addEventListener("click", () => {
+  modal.showModal();
+});
+
+const closeModal = document.getElementById("close-modal");
+closeModal.addEventListener("click", () => {
+  modal.close();
+});

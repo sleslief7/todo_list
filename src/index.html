@@ -11,27 +11,85 @@
   </head>
   <body>
     <header>
-      <i class="fa-solid fa-bars" id="nav-bars"></i>
-      <h1 id="title">Inbox</h1>
+      <i class="fa-solid fa-bars" id="nav-bars" title="Open/Close sidebar"></i>
+      <h1 id="title"><i class="fa-solid fa-check-double"></i>TodoList</h1>
       <i class="fa-solid fa-circle-plus" id="add-task" title="Add a task"></i>
+      <dialog id="modal">
+        <form>
+          <div id="modal-top">
+            <div id="task-title-div">
+              <label for="task-title">*Task Title</label>
+              <input type="text" name="task-title" id="task-title" placeholder="*Enter task title" required>
+            </div>
+            <i class="fa-solid fa-xmark" id="close-modal"></i>
+          </div>
+          <div id="task-description-div">
+            <label for="task-description">Description</label>
+            <textarea name="task-description" id="task-description" cols="30" rows="10" placeholder="Enter a description for your task."></textarea>
+          </div>
+          <div id="due-date-div">
+            <label for="due-date">Due date</label>
+            <input type="date" name="due-date" id="due-date">
+          </div>
+          <div id="priority-div">
+            <label for="priority">Priority</label>
+            <select name="priority" id="priority">
+              <option value="low" selected>Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div id="project-select-div">
+            <label for="projects-select">Projects</label>
+            <select name="projects" id="projects-select">
+              <option value="inbox" selected>Inbox</option>
+            </select>
+          </div>
+          <button type="submit" id="add-btn">Add</button>
+        </form>
+      </dialog>
     </header>
     <nav id="nav-bar">
-      <ul>
+      <ul id="nav-bar-list">
         <li id="inbox"><i class="fa-solid fa-inbox"></i> Inbox</li>
         <li id="today"><i class="fa-solid fa-calendar-day"></i> Today</li>
         <li id="projects"><i class="fa-solid fa-list-check"></i> Projects</li>
+        <ul id="projects-list">
+          <li><i class="fa-solid fa-hashtag"></i> coco</li>
+        </ul>
       </ul>
     </nav>
-    <div id="content"></div>
+    <div id="content">
+      <h2 class="project-title">Project title</h2>
+      <div class="cards-container">
+        <div class="card">
+          <input type="checkbox" name="checkbox" class="checkbox" />
+          <div class="card-right-side">
+            <div class="card-header">
+              <h3 class="task-title">Task title</h3>
+              <div class="header-icons">
+                <i class="fa-regular fa-pen-to-square edit-icon"></i>
+                <i class="fa-solid fa-xmark"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="task-description">description</div>
+              <div class="due-date">By: 06/21/2024</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>
       <p>
-        Created by <i class="fa-brands fa-github"></i>
+        Created by 
+        <i class="fa-brands fa-github"></i>
         <a
           href="https://github.com/sleslief7/todo_list"
           target="_blank"
-          id="gh-link"
-          >Leslie Fernandez</a
-        >
+          id="gh-link">Leslie Fernandez
+        </a>
       </p>
     </footer>
   </body>

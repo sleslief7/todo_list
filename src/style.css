@@ -9,15 +9,14 @@
   --secondary-color: rgb(244, 53, 149);
   --third-color: rgb(0, 0, 0);
   --fourth-color: rgb(239, 164, 201);
+  --opacity-color: rgba(212, 164, 188, 0.599);
 }
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 body {
   font-family: "DMSans", sans-serif;
-  color: var(--secondary-color);
+  color: var(--fourth-color);
   background-color: var(--primary-color);
   display: grid;
   grid-template-columns: max-content 4fr;
@@ -51,6 +50,7 @@ header > i {
 #add-task {
   padding: 5px 15px;
   justify-self: end;
+  cursor: pointer;
 }
 #add-task:hover {
   color: var(--fourth-color);
@@ -69,7 +69,7 @@ ul {
   display: flex;
   height: 100%;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   font-size: 1.5rem;
   font-weight: 800;
   padding: 20px;
@@ -84,8 +84,11 @@ li {
 }
 li:hover {
   border-bottom: 2px solid var(--secondary-color);
-  background-color: rgba(212, 164, 188, 0.599);
+  background-color: var(--opacity-color);
   color: var(--third-color);
+}
+#projects-list {
+  padding-top: 0;
 }
 button {
   font-family: inherit;
@@ -126,4 +129,73 @@ button:hover {
 }
 i {
   color: var(--secondary-color);
+}
+.card {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  background-color: var(--opacity-color);
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  accent-color: var(--secondary-color);
+}
+.card-right-side {
+  display: grid;
+}
+.card-header,
+.card-body {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+}
+.header-icons,
+.due-date {
+  justify-self: end;
+  padding: 5px;
+  display: flex;
+  gap: 10px;
+}
+.header-icons > i {
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.header-icons > i:hover {
+  color: var(--secondary-color);
+}
+#modal {
+  padding: 15px;
+  background-color: var(--fourth-color);
+  border-radius: 5px;
+  animation: fade-in 0.5s forwards;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#close-modal {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+#close-modal:hover {
+  color: var(--opacity-color);
+}
+#modal-top {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+}
+#modal-top > i {
+  justify-self: end;
 }
