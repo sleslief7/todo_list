@@ -148,6 +148,7 @@ i {
 }
 .card-right-side {
   display: grid;
+  word-wrap: break-word;
 }
 .card-header,
 .card-body {
@@ -173,7 +174,9 @@ i {
 #modal {
   padding: 15px;
   background-color: var(--fourth-color);
-  border-radius: 5px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px var(--secondary-color);
   animation: fade-in 0.5s forwards;
 }
 @keyframes fade-in {
@@ -184,13 +187,12 @@ i {
     opacity: 1;
   }
 }
-
 #close-modal {
   font-size: 1.5rem;
   cursor: pointer;
 }
 #close-modal:hover {
-  color: var(--opacity-color);
+  color: red;
 }
 #modal-top {
   display: grid;
@@ -198,4 +200,42 @@ i {
 }
 #modal-top > i {
   justify-self: end;
+}
+#task-title-div,
+#task-description-div,
+#due-date-div,
+#priority-div,
+#project-select-div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+#select-divs {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+#task-title-input,
+#task-description-textarea,
+#due-date-input,
+#priority-input,
+#projects-select-input {
+  border-radius: 10px;
+  padding: 10px;
+}
+#priority-input,
+#projects-select-input {
+  width: 150px;
+}
+#add-btn {
+  text-align: center;
+  margin: 0 auto;
+}
+#add-btn:active {
+  background-color: var(--opacity-color);
+}
+.doneTask {
+  text-decoration: line-through;
 }

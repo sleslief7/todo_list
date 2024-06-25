@@ -15,35 +15,37 @@
       <h1 id="title"><i class="fa-solid fa-check-double"></i>TodoList</h1>
       <i class="fa-solid fa-circle-plus" id="add-task" title="Add a task"></i>
       <dialog id="modal">
-        <form>
+        <form id="modal-form">
           <div id="modal-top">
             <div id="task-title-div">
-              <label for="task-title">*Task Title</label>
-              <input type="text" name="task-title" id="task-title" placeholder="*Enter task title" required>
+              <label for="task-title-input">*Task Title</label>
+              <input type="text" name="taskTitle" id="task-title-input" placeholder="*Enter task title" required>
             </div>
             <i class="fa-solid fa-xmark" id="close-modal"></i>
           </div>
           <div id="task-description-div">
-            <label for="task-description">Description</label>
-            <textarea name="task-description" id="task-description" cols="30" rows="10" placeholder="Enter a description for your task."></textarea>
+            <label for="task-description-textarea">Description</label>
+            <textarea name="taskDescription" id="task-description-textarea" cols="30" rows="10" placeholder="Enter a description for your task."></textarea>
           </div>
           <div id="due-date-div">
-            <label for="due-date">Due date</label>
-            <input type="date" name="due-date" id="due-date">
+            <label for="due-date-input">Due date</label>
+            <input type="date" name="dueDate" id="due-date-input">
           </div>
-          <div id="priority-div">
-            <label for="priority">Priority</label>
-            <select name="priority" id="priority">
-              <option value="low" selected>Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-          <div id="project-select-div">
-            <label for="projects-select">Projects</label>
-            <select name="projects" id="projects-select">
-              <option value="inbox" selected>Inbox</option>
-            </select>
+          <div id="select-divs">
+            <div id="priority-div">
+              <label for="priority-input">Priority</label>
+              <select name="priorityDropDown" id="priority-input">
+                <option value="low" selected>Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div id="project-select-div">
+              <label for="projects-select-input">Projects</label>
+              <select name="projectsDropDown" id="projects-select-input">
+                <option value="inbox" selected>Inbox</option>
+              </select>
+            </div>
           </div>
           <button type="submit" id="add-btn">Add</button>
         </form>
@@ -61,7 +63,7 @@
     </nav>
     <div id="content">
       <h2 class="project-title">Project title</h2>
-      <div class="cards-container">
+      <div id="cards-container">
         <div class="card">
           <input type="checkbox" name="checkbox" class="checkbox" />
           <div class="card-right-side">
@@ -69,11 +71,11 @@
               <h3 class="task-title">Task title</h3>
               <div class="header-icons">
                 <i class="fa-regular fa-pen-to-square edit-icon"></i>
-                <i class="fa-solid fa-xmark"></i>
+                <i class="fa-solid fa-xmark delete-icon"></i>
               </div>
             </div>
             <div class="card-body">
-              <div class="task-description">description</div>
+              <div class="task-description">Description</div>
               <div class="due-date">By: 06/21/2024</div>
               </div>
             </div>
