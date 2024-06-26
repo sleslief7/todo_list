@@ -11,27 +11,93 @@
   <script defer src="runtime.bundle.js"></script><script defer src="index.bundle.js"></script></head>
   <body>
     <header>
-      <h1 id="title">Title</h1>
-      <button type="button" id="sign-in">Sign In</button>
+      <i class="fa-solid fa-bars" id="nav-bars" title="Open/Close sidebar"></i>
+      <h1 id="title"><i class="fa-solid fa-check-double"></i>TodoList</h1>
+      <i class="fa-solid fa-circle-plus" id="add-task" title="Add a task"></i>
+      <dialog id="modal">
+        <form id="modal-form">
+          <div id="modal-top">
+            <div id="task-title-div">
+              <label for="task-title-input">*Task Title</label>
+              <input
+                type="text"
+                name="taskTitle"
+                id="task-title-input"
+                placeholder="*Enter task title"
+                required
+              />
+            </div>
+            <i class="fa-solid fa-xmark" id="close-modal"></i>
+          </div>
+          <div id="task-description-div">
+            <label for="task-description-textarea">Description</label>
+            <textarea
+              name="taskDescription"
+              id="task-description-textarea"
+              cols="30"
+              rows="10"
+              placeholder="Enter a description for your task."
+            ></textarea>
+          </div>
+          <div id="due-date-div">
+            <label for="due-date-input">Due date</label>
+            <input type="date" name="dueDate" id="due-date-input" />
+          </div>
+          <div id="select-divs">
+            <div id="priority-div">
+              <label for="priority-input">Priority</label>
+              <select name="priorityDropDown" id="priority-input">
+                <option value="low" selected>Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div id="project-select-div">
+              <label for="projects-select-input">Projects</label>
+              <select name="projectsDropDown" id="projects-select-input">
+                <option value="inbox" selected>Inbox</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" id="add-btn">Add</button>
+        </form>
+      </dialog>
     </header>
-    <nav>
-      <ul>
-        <li>Home</li>
-        <li>Projects</li>
-        <li>Account</li>
-        <li><button type="button" id="log-out">Log Out</button></li>
-      </ul>
-    </nav>
-    <div id="content"></div>
+    <div id="content-container">
+      <nav id="nav-bar">
+        <div id="inbox" class="default-nav-items">
+          <i class="fa-solid fa-inbox"></i> Inbox
+        </div>
+        <div id="today" class="default-nav-items">
+          <i class="fa-solid fa-calendar-day"></i> Today
+        </div>
+        <div id="projects" class="default-nav-items">
+          <div id="project-div">
+            <div><i class="fa-solid fa-list-check"></i> Projects</div>
+            <i class="fa-solid fa-plus" id="add-project-icon"></i>
+          </div>
+          <div id="projects-list">
+            <div class="project-list-item">
+              <i class="fa-solid fa-hashtag"></i> coco
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="content">
+        <h2 class="project-title">Project title</h2>
+        <div id="cards-container"></div>
+      </div>
+    </div>
     <footer>
       <p>
-        Created by <i class="fa-brands fa-github"></i>
+        Created by
+        <i class="fa-brands fa-github"></i>
         <a
           href="https://github.com/sleslief7/todo_list"
           target="_blank"
           id="gh-link"
-          >Leslie Fernandez</a
-        >
+          >Leslie Fernandez
+        </a>
       </p>
     </footer>
   </body>
