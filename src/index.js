@@ -1,10 +1,10 @@
 import "./style.css";
 
-import { addTasks } from "./state.js";
+import { addTasks, addProjects } from "./state.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
-const taskForm = document.getElementById("modal-form");
+const taskForm = document.getElementById("task-form");
 const addTaskIcon = document.getElementById("add-task");
 const taskModal = document.getElementById("task-modal");
 const closeTaskModal = document.getElementById("close-modal");
@@ -24,16 +24,19 @@ closeTaskModal.addEventListener("click", () => {
   taskModal.close();
 });
 
-addProjectIcon.addEventListener("click", (e) => {
+addProjectIcon.addEventListener("click", () => {
   projectModal.showModal();
 });
 
-closeProjectModal.addEventListener("click", (e) => {
+closeProjectModal.addEventListener("click", () => {
   projectModal.close();
 });
 
 projectForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  addProjects();
+  clearProjectForm();
+  projectModal.close();
 });
 
 taskForm.addEventListener("submit", (e) => {
@@ -50,6 +53,10 @@ function clearTaskForm() {
   taskForm.dueDate.value = "";
   taskForm.priorityDropDown.value = "low";
   taskForm.projectsDropDown.value = "inbox";
+}
+
+function clearProjectForm() {
+  projectForm.projectTitle.value = "";
 }
 
 function changeTitle(currentTab) {

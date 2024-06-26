@@ -87,16 +87,23 @@ nav {
 .fa-solid {
   color: var(--secondary-color);
 }
-#project-div,
-#projects-list {
+#project-div {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+#projects-list {
+  padding-top: 0;
 }
 #add-project-icon {
   padding: 5px;
   border: 2px solid transparent;
   border-radius: 50%;
+}
+.project-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 .edit-project-icon,
 .delete-project-icon {
@@ -113,9 +120,6 @@ nav {
   cursor: pointer;
   border: 2px solid var(--secondary-color);
   background-color: var(--third-color);
-}
-#projects-list {
-  padding-top: 0;
 }
 #title {
   text-align: center;
@@ -184,7 +188,7 @@ nav {
 .header-icons > i:hover {
   color: var(--secondary-color);
 }
-#project-dialog {
+#project-dialog-div {
   display: grid;
   gap: 15px;
 }

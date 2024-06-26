@@ -15,7 +15,7 @@
       <h1 id="title"><i class="fa-solid fa-check-double"></i>TodoList</h1>
       <i class="fa-solid fa-circle-plus" id="add-task" title="Add a task"></i>
       <dialog id="task-modal">
-        <form id="modal-form">
+        <form id="task-form">
           <div id="modal-top">
             <div id="task-title-div">
               <label for="task-title-input">*Task Title</label>
@@ -24,6 +24,8 @@
                 name="taskTitle"
                 id="task-title-input"
                 placeholder="*Enter task title"
+                maxlength="35"
+                minlength="1"
                 required
               />
             </div>
@@ -36,6 +38,8 @@
               id="task-description-textarea"
               cols="30"
               rows="10"
+              maxlength="150"
+              minlength="1"
               placeholder="Enter a description for your task."
             ></textarea>
           </div>
@@ -76,21 +80,32 @@
             <div><i class="fa-solid fa-list-check"></i> Projects</div>
             <i class="fa-solid fa-plus" id="add-project-icon"></i>
             <dialog id="project-dialog">
-              <i class="fa-solid fa-xmark" id="close-project-modal"></i>
-              <form id="project-form">
-                <label for="project-name">Project name</label>
-                <input type="text" name="projectTitle" id="project-name" />
-                <button>Add Project</button>
-              </form>
+              <div id="project-dialog-div">
+                <i class="fa-solid fa-xmark" id="close-project-modal"></i>
+                <form id="project-form">
+                  <label for="project-name">Project name</label>
+                  <input
+                    type="text"
+                    name="projectTitle"
+                    id="project-name"
+                    maxlength="35"
+                    minlength="1"
+                    required
+                  />
+                  <button>Add Project</button>
+                </form>
+              </div>
             </dialog>
           </div>
           <div id="projects-list">
-            <div class="project-list-item">
-              <i class="fa-solid fa-hashtag"></i> coco
-            </div>
-            <div class="project-icons">
-              <i class="fa-regular fa-pen-to-square edit-project-icon"></i>
-              <i class="fa-solid fa-xmark delete-project-icon"></i>
+            <div class="project-item">
+              <div class="project-list-item">
+                <i class="fa-solid fa-hashtag"></i> coco
+              </div>
+              <div class="project-icons">
+                <i class="fa-regular fa-pen-to-square edit-project-icon"></i>
+                <i class="fa-solid fa-xmark delete-project-icon"></i>
+              </div>
             </div>
           </div>
         </div>

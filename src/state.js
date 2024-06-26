@@ -1,9 +1,8 @@
 import { Task, Project } from "./models.js";
-import buildCard from "./buildCard.js";
-import { createProjectItemDiv } from "./projects.js";
+import { refreshTasks, refreshProjects } from "./updateDisplay.js";
 
-const form = document.getElementById("modal-form");
-let isEditMode = false;
+const taskForm = document.getElementById("task-form");
+const projectForm = document.getElementById("project-form");
 
 export const getStorageItem = (item) => {
   const serializedList = localStorage.getItem(item);
@@ -11,23 +10,28 @@ export const getStorageItem = (item) => {
   return JSON.parse(serializedList);
 };
 
-const tasks = getStorageItem("tasks");
-const projects = getStorageItem("projects");
+export const tasks = getStorageItem("tasks");
+export const projects = getStorageItem("projects");
 refreshTasks();
+refreshProjects();
 
-const updateStorageItem = (item) => {
+export const updateStorageItem = (item) => {
   let itemSerialized = JSON.stringify(item === "tasks" ? tasks : projects);
   localStorage.setItem(item, itemSerialized);
 };
 
-function formToTaskObj() {
+export function formToTaskObj() {
   return new Task(
-    form.taskTitle.value,
-    form.taskDescription.value,
-    form.dueDate.value.replaceAll("-", "/"),
-    form.priorityDropDown.value,
-    form.projectsDropDown.value
+    taskForm.taskTitle.value,
+    taskForm.taskDescription.value,
+    taskForm.dueDate.value.replaceAll("-", "/"),
+    taskForm.priorityDropDown.value,
+    taskForm.projectsDropDown.value
   );
+}
+
+export function formToProjectObj() {
+  return new Project(projectForm.projectTitle.value);
 }
 
 export function addTasks() {
@@ -37,61 +41,9 @@ export function addTasks() {
   refreshTasks();
 }
 
-function refreshTasks() {
-  const cardsContainer = document.getElementById("cards-container");
-  cardsContainer.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    cardsContainer.appendChild(buildCard(tasks[i], i));
-  }
-  addDeleteListeners();
-  addCheckboxListeners();
-}
-
-export const removeTask = (index) => {
-  tasks.splice(index, 1);
-  updateStorageItem("tasks");
-  refreshTasks();
-};
-
-function refreshProjects() {
-  // const projectsList = document.getElementById("projects-list");
-  // projectsList.innerHTML = "";
-  // if (projects.length === 0) return;
-  // for (let i = 0; i < projects.length; i++) {
-  //   projectsList.appendChild(createProjectItemDiv(projects[i], i));
-  // }
-}
-
-function addDeleteListeners() {
-  const deleteBtns = document.querySelectorAll(".delete-icon");
-  deleteBtns.forEach((icon) => {
-    icon.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      removeTask(index);
-    });
-  });
-}
-
-function addCheckboxListeners() {
-  const checkboxes = document.querySelectorAll(".checkbox");
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      let modifiedTask = tasks[index];
-      modifiedTask.completed = checkbox.checked;
-      editTask(modifiedTask, index);
-    });
-  });
-}
-
-function addEditListeners() {
-  isEditMode = true;
-  if (isEditMode) {
-  }
-}
-
-function editTask(modifiedTask, index) {
-  tasks[index] = modifiedTask;
-  updateStorageItem("tasks");
-  refreshTasks();
+export function addProjects() {
+  const project = formToProjectObj();
+  projects.push(project);
+  updateStorageItem("projects");
+  refreshProjects();
 }

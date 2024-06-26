@@ -14,6 +14,6 @@ export function Task(
   this.completed = completed;
 }
 
-export function Project(title) {
-  this.title = title;
+export function Project(projectTitle) {
+  this.projectTitle = projectTitle;
 }
