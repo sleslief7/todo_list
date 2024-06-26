@@ -1,6 +1,6 @@
 import "./style.css";
 
-import { addTasks } from "./state.js";
+import { addTasks, addProject } from "./state.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
@@ -24,6 +24,7 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   // TODO: Validate form values
   addTasks();
+  addProject();
   clearForm();
   modal.close();
 });
