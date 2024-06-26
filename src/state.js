@@ -14,7 +14,6 @@ export const getStorageItem = (item) => {
 const tasks = getStorageItem("tasks");
 const projects = getStorageItem("projects");
 refreshTasks();
-refreshProjects();
 
 const updateStorageItem = (item) => {
   let itemSerialized = JSON.stringify(item === "tasks" ? tasks : projects);
@@ -48,33 +47,19 @@ function refreshTasks() {
   addCheckboxListeners();
 }
 
-function projectFromTask() {
-  // let project = "";
-  // if (tasks.length === 0) return;
-  // for (let i = 0; i < tasks.length; i++) {
-  //   project = new Project(tasks[i].taskProject);
-  //   projects.push(project);
-  // }
-}
 export const removeTask = (index) => {
   tasks.splice(index, 1);
   updateStorageItem("tasks");
   refreshTasks();
 };
 
-export function addProject() {
-  projectFromTask();
-  updateStorageItem("projects");
-  refreshProjects();
-}
-
 function refreshProjects() {
-  const projectsList = document.getElementById("projects-list");
-  projectsList.innerHTML = "";
-  if (projects.length === 0) return;
-  for (let i = 0; i < projects.length; i++) {
-    projectsList.appendChild(createProjectItemDiv(projects[i], i));
-  }
+  // const projectsList = document.getElementById("projects-list");
+  // projectsList.innerHTML = "";
+  // if (projects.length === 0) return;
+  // for (let i = 0; i < projects.length; i++) {
+  //   projectsList.appendChild(createProjectItemDiv(projects[i], i));
+  // }
 }
 
 function addDeleteListeners() {

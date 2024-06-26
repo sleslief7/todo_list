@@ -1,40 +1,55 @@
 import "./style.css";
 
-import { addTasks, addProject } from "./state.js";
+import { addTasks } from "./state.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
-const form = document.getElementById("modal-form");
-const addTask = document.getElementById("add-task");
-const modal = document.getElementById("modal");
-const closeModal = document.getElementById("close-modal");
+const taskForm = document.getElementById("modal-form");
+const addTaskIcon = document.getElementById("add-task");
+const taskModal = document.getElementById("task-modal");
+const closeTaskModal = document.getElementById("close-modal");
+const projectModal = document.getElementById("project-dialog");
+const addProjectIcon = document.getElementById("add-project-icon");
+const closeProjectModal = document.getElementById("close-project-modal");
+const projectForm = document.getElementById("project-form");
 
 navBarIcon.addEventListener("click", () => {
   navBar.classList.toggle("hidden");
 });
 
-addTask.addEventListener("click", () => {
-  clearForm();
-  modal.showModal();
+addTaskIcon.addEventListener("click", () => taskModal.showModal());
+
+closeTaskModal.addEventListener("click", () => {
+  clearTaskForm();
+  taskModal.close();
 });
 
-closeModal.addEventListener("click", () => modal.close());
+addProjectIcon.addEventListener("click", (e) => {
+  projectModal.showModal();
+});
 
-form.addEventListener("submit", (e) => {
+closeProjectModal.addEventListener("click", (e) => {
+  projectModal.close();
+});
+
+projectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
+
+taskForm.addEventListener("submit", (e) => {
   e.preventDefault();
   // TODO: Validate form values
   addTasks();
-  addProject();
-  clearForm();
-  modal.close();
+  clearTaskForm();
+  taskModal.close();
 });
 
-function clearForm() {
-  form.taskTitle.value = "";
-  form.taskDescription.value = "";
-  form.dueDate.value = "";
-  form.priorityDropDown.value = "low";
-  form.projectsDropDown.value = "inbox";
+function clearTaskForm() {
+  taskForm.taskTitle.value = "";
+  taskForm.taskDescription.value = "";
+  taskForm.dueDate.value = "";
+  taskForm.priorityDropDown.value = "low";
+  taskForm.projectsDropDown.value = "inbox";
 }
 
 function changeTitle(currentTab) {

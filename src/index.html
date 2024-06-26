@@ -14,7 +14,7 @@
       <i class="fa-solid fa-bars" id="nav-bars" title="Open/Close sidebar"></i>
       <h1 id="title"><i class="fa-solid fa-check-double"></i>TodoList</h1>
       <i class="fa-solid fa-circle-plus" id="add-task" title="Add a task"></i>
-      <dialog id="modal">
+      <dialog id="task-modal">
         <form id="modal-form">
           <div id="modal-top">
             <div id="task-title-div">
@@ -75,10 +75,22 @@
           <div id="project-div">
             <div><i class="fa-solid fa-list-check"></i> Projects</div>
             <i class="fa-solid fa-plus" id="add-project-icon"></i>
+            <dialog id="project-dialog">
+              <i class="fa-solid fa-xmark" id="close-project-modal"></i>
+              <form id="project-form">
+                <label for="project-name">Project name</label>
+                <input type="text" name="projectTitle" id="project-name" />
+                <button>Add Project</button>
+              </form>
+            </dialog>
           </div>
           <div id="projects-list">
             <div class="project-list-item">
               <i class="fa-solid fa-hashtag"></i> coco
+            </div>
+            <div class="project-icons">
+              <i class="fa-regular fa-pen-to-square edit-project-icon"></i>
+              <i class="fa-solid fa-xmark delete-project-icon"></i>
             </div>
           </div>
         </div>

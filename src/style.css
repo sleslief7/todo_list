@@ -87,15 +87,28 @@ nav {
 .fa-solid {
   color: var(--secondary-color);
 }
-#project-div {
+#project-div,
+#projects-list {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 #add-project-icon {
   padding: 5px;
   border: 2px solid transparent;
   border-radius: 50%;
 }
+.edit-project-icon,
+.delete-project-icon {
+  color: var(--secondary-color);
+  font-size: 0.7rem;
+}
+.edit-project-icon:hover,
+.delete-project-icon:hover {
+  color: var(--fourth-color);
+  cursor: pointer;
+}
+
 #add-project-icon:hover {
   cursor: pointer;
   border: 2px solid var(--secondary-color);
@@ -153,6 +166,9 @@ nav {
   grid-template-columns: max-content 1fr;
   align-items: center;
 }
+.card-body {
+  font-size: 0.8rem;
+}
 .header-icons,
 .due-date {
   justify-self: end;
@@ -168,7 +184,19 @@ nav {
 .header-icons > i:hover {
   color: var(--secondary-color);
 }
-#modal {
+#project-dialog {
+  display: grid;
+  gap: 15px;
+}
+#close-project-modal {
+  justify-self: end;
+  cursor: pointer;
+}
+#close-project-modal:hover {
+  color: red;
+}
+#task-modal,
+#project-dialog {
   padding: 15px;
   background-color: var(--fourth-color);
   border: none;
