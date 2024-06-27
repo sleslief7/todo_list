@@ -268,9 +268,3 @@ nav {
 .doneTask {
   text-decoration: line-through;
 }
-.hidden {
-  display: none;
-}
-.show {
-  display: inline-block;
-}

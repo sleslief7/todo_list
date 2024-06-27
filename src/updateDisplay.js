@@ -7,6 +7,8 @@ import {
   updateStorageItem,
   formToTaskObj,
   formToProjectObj,
+  addTask,
+  addProject,
 } from "./state.js";
 
 const taskModal = document.getElementById("task-modal");
@@ -15,60 +17,73 @@ const projectModal = document.getElementById("project-dialog");
 const projectForm = document.getElementById("project-form");
 const saveTaskBtn = document.getElementById("save-task");
 const saveProjectBtn = document.getElementById("save-project");
-let isEditMode = false;
 
-export function refreshProjects() {
+export function refresh() {
+  refreshProjects();
+  refreshTasks();
+  addEditListeners();
+}
+
+function refreshProjects() {
   const projectsList = document.getElementById("projects-list");
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
     projectsList.appendChild(createProjectItemDiv(projects[i], i));
   }
   addDeleteProjectListeners();
-  addEditProjectListeners();
 }
-export function refreshTasks() {
+
+function refreshTasks() {
   const cardsContainer = document.getElementById("cards-container");
   cardsContainer.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     cardsContainer.appendChild(buildCard(tasks[i], i));
   }
   addDeleteTaskListeners();
-  addEditTaskListeners();
   addCheckboxListeners();
 }
+
 function addDeleteProjectListeners() {
   const deleteBtns = document.querySelectorAll(".delete-project-icon");
   deleteBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      removeProject(index);
+      let index = grabIndex(e);
+      removeEntity("project", index);
     });
   });
 }
-function addEditProjectListeners() {
-  const editBtns = document.querySelectorAll(".edit-project-icon");
+
+function addEditListeners() {
+  const editTaskBtns = Array.from(document.querySelectorAll(".edit-icon"));
+  const editProjectBtns = Array.from(
+    document.querySelectorAll(".edit-project-icon")
+  );
+  const editBtns = [...editTaskBtns, ...editProjectBtns];
   editBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      edit("projects", index);
+      const index = grabIndex(e);
+      const entityType = icon.className.includes("edit-icon")
+        ? "task"
+        : "project";
+      if (entityType === "task") {
+        updateTaskForm(tasks[index]);
+        saveTaskBtn.innerText = "Save";
+        taskModal.showModal();
+      } else {
+        updateProjectForm(projects[index]);
+        saveProjectBtn.innerText = "Save";
+        projectModal.showModal();
+      }
     });
   });
 }
-function addEditTaskListeners() {
-  const editBtns = document.querySelectorAll(".edit-icon");
-  editBtns.forEach((icon) => {
-    icon.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      edit("tasks", index);
-    });
-  });
-}
+
 function addDeleteTaskListeners() {
   const deleteBtns = document.querySelectorAll(".delete-icon");
   deleteBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
-      removeTask(index);
+      let index = grabIndex(e);
+      removeEntity("task", index);
     });
   });
 }
@@ -77,26 +92,24 @@ function addCheckboxListeners() {
   const checkboxes = document.querySelectorAll(".checkbox");
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("click", (e) => {
-      let index = Number(e.target.getAttribute("data-index"));
+      let index = grabIndex(e);
       let modifiedTask = tasks[index];
       modifiedTask.completed = checkbox.checked;
-      tasks[index] = modifiedTask;
-      updateStorageItem("tasks");
-      refreshTasks();
+      editEntity(modifiedTask, "task", index);
     });
   });
 }
-function edit(editItem, index) {
-  let editModalToOpen =
-    editItem === "tasks" ? openTaskEditModal : openProjectEditModal;
-  editModalToOpen(index);
-  let formObj = editItem === "tasks" ? formToTaskObj : formToProjectObj;
-  let editItemObj = editItem === "tasks" ? tasks[index] : projects[index];
-  let refresh = editItem === "tasks" ? refreshTasks : refreshProjects;
-  editItemObj = formObj();
-  updateStorageItem(editItem);
+
+function editEntity(entity, entityType, index) {
+  if (entityType === "task") {
+    tasks[index] = entity;
+  } else {
+    projects[index] = entity;
+  }
+  updateStorageItem(entityType);
   refresh();
 }
+
 function updateTaskForm(currentTask) {
   let formatedDate = format(currentTask.taskDueDate, "yyyy-MM-dd");
   taskForm.taskTitle.value = currentTask.taskTitle;
@@ -105,80 +118,38 @@ function updateTaskForm(currentTask) {
   taskForm.priorityDropDown.value = currentTask.taskPriority;
   taskForm.projectsDropDown.value = currentTask.taskProject;
 }
+
 function updateProjectForm(currentTask) {
   projectForm.projectTitle.value = currentTask.projectTitle;
 }
-export function openTaskEditModal(index) {
-  isEditMode = true;
-  changeTaskAddBtn();
-  updateTaskForm(tasks[index]);
-  taskModal.showModal();
-}
-export function changeTaskAddBtn() {
-  const addBtn = document.getElementById("submit-task");
-  changeBtnCondition(saveTaskBtn, addBtn);
-}
-export function changeProjectAddBtn() {
-  const addBtn = document.getElementById("add-btn");
-  changeBtnCondition(saveProjectBtn, addBtn);
-}
-function changeBtnCondition(saveBtn, addBtn) {
-  if (isEditMode) {
-    saveBtn.classList.remove("hidden");
-    saveBtn.classList.add("show");
-    addBtn.classList.add("hidden");
-    addBtn.classList.remove("show");
-    isEditMode = false;
-  } else {
-    addBtn.classList.remove("hidden");
-    addBtn.classList.add("show");
-    saveBtn.classList.add("hidden");
-    saveBtn.classList.remove("show");
-  }
-}
-function updateTask(index) {
-  tasks[index] = formToTaskObj();
-  updateStorageItem("tasks");
-  refreshTasks();
-}
-function updateProject(index) {
-  projects[index] = formToProjectObj();
-  updateStorageItem("projects");
-  refreshProjects();
-}
 
 saveProjectBtn.addEventListener("click", (e) => {
-  const target = e.currentTarget;
-  let index = Number(target.getAttribute("data-index"));
-  updateProject(index);
+  if (e.currentTarget.innerText.includes("Add")) {
+    addProject();
+  } else {
+    editEntity(formToProjectObj(), "project", grabIndex(e));
+  }
   projectModal.close();
   clearProjectForm();
 });
+
 saveTaskBtn.addEventListener("click", (e) => {
-  const target = e.currentTarget;
-  let index = Number(target.getAttribute("data-index"));
-  updateTask(index);
+  if (e.currentTarget.innerText.includes("Add")) {
+    addTask();
+  } else {
+    editEntity(formToTaskObj(), "task", grabIndex(e));
+  }
   taskModal.close();
   clearTaskForm();
 });
-export function openProjectEditModal(index) {
-  isEditMode = true;
-  changeProjectAddBtn();
-  updateProjectForm(projects[index]);
-  projectModal.showModal();
-}
-const removeTask = (index) => {
-  tasks.splice(index, 1);
-  updateStorageItem("tasks");
-  refreshTasks();
-};
 
-function removeProject(index) {
-  projects.splice(index, 1);
-  updateStorageItem("projects");
-  refreshProjects();
+function removeEntity(entityType, index) {
+  entityType === "task" ? tasks.splice(index, 1) : projects.splice(index, 1);
+  updateStorageItem(entityType);
+  refresh();
 }
-function clearTaskForm() {
+
+export function clearTaskForm() {
   taskForm.taskTitle.value = "";
   taskForm.taskDescription.value = "";
   taskForm.dueDate.value = "";
@@ -186,6 +157,10 @@ function clearTaskForm() {
   taskForm.projectsDropDown.value = "inbox";
 }
 
-function clearProjectForm() {
+export function clearProjectForm() {
   projectForm.projectTitle.value = "";
+}
+
+function grabIndex(e) {
+  return Number(e.currentTarget.getAttribute("data-index"));
 }

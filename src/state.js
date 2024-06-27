@@ -1,5 +1,5 @@
 import { Task, Project } from "./models.js";
-import { refreshTasks, refreshProjects } from "./updateDisplay.js";
+import { refresh } from "./updateDisplay.js";
 
 const taskForm = document.getElementById("task-form");
 const projectForm = document.getElementById("project-form");
@@ -10,13 +10,12 @@ export const getStorageItem = (item) => {
   return JSON.parse(serializedList);
 };
 
-export const tasks = getStorageItem("tasks");
-export const projects = getStorageItem("projects");
-refreshTasks();
-refreshProjects();
+export const tasks = getStorageItem("task");
+export const projects = getStorageItem("project");
+refresh();
 
 export const updateStorageItem = (item) => {
-  let itemSerialized = JSON.stringify(item === "tasks" ? tasks : projects);
+  let itemSerialized = JSON.stringify(item === "task" ? tasks : projects);
   localStorage.setItem(item, itemSerialized);
 };
 
@@ -34,16 +33,16 @@ export function formToProjectObj() {
   return new Project(projectForm.projectTitle.value);
 }
 
-export function addTasks() {
+export function addTask() {
   const task = formToTaskObj();
   tasks.push(task);
-  updateStorageItem("tasks");
-  refreshTasks();
+  updateStorageItem("task");
+  refresh();
 }
 
-export function addProjects() {
+export function addProject() {
   const project = formToProjectObj();
   projects.push(project);
-  updateStorageItem("projects");
-  refreshProjects();
+  updateStorageItem("project");
+  refresh();
 }

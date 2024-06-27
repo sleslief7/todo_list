@@ -1,7 +1,6 @@
 import "./style.css";
-
-import { addTasks, addProjects } from "./state.js";
-import { changeProjectAddBtn, changeTaskAddBtn } from "./updateDisplay.js";
+import { addTask, addProject } from "./state.js";
+import { clearProjectForm, clearTaskForm } from "./updateDisplay.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
@@ -13,14 +12,21 @@ const projectModal = document.getElementById("project-dialog");
 const addProjectIcon = document.getElementById("add-project-icon");
 const closeProjectModal = document.getElementById("close-project-modal");
 const projectForm = document.getElementById("project-form");
+const saveTaskBtn = document.getElementById("save-task");
+const saveProjectBtn = document.getElementById("save-project");
 
 navBarIcon.addEventListener("click", () => {
   navBar.classList.toggle("hidden");
 });
 
 addTaskIcon.addEventListener("click", () => {
-  changeTaskAddBtn();
+  saveTaskBtn.innerText = "Add";
   taskModal.showModal();
+});
+
+addProjectIcon.addEventListener("click", () => {
+  saveProjectBtn.innerText = "Add";
+  projectModal.showModal();
 });
 
 closeTaskModal.addEventListener("click", () => {
@@ -28,43 +34,6 @@ closeTaskModal.addEventListener("click", () => {
   taskModal.close();
 });
 
-addProjectIcon.addEventListener("click", () => {
-  changeProjectAddBtn();
-  projectModal.showModal();
-});
-
 closeProjectModal.addEventListener("click", () => {
   projectModal.close();
 });
-
-projectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  addProjects();
-  clearProjectForm();
-  projectModal.close();
-});
-
-taskForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  // TODO: Validate form values
-  addTasks();
-  clearTaskForm();
-  taskModal.close();
-});
-
-function clearTaskForm() {
-  taskForm.taskTitle.value = "";
-  taskForm.taskDescription.value = "";
-  taskForm.dueDate.value = "";
-  taskForm.priorityDropDown.value = "low";
-  taskForm.projectsDropDown.value = "inbox";
-}
-
-function clearProjectForm() {
-  projectForm.projectTitle.value = "";
-}
-
-function changeTitle(currentTab) {
-  const title = document.getElementById("title");
-  title.textContent = currentTab;
-}
