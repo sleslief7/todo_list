@@ -1,5 +1,5 @@
 import buildCard from "./buildCard.js";
-import { createProjectItemDiv } from "./projects.js";
+import { createProjectItemDiv, createOption } from "./projects.js";
 import { format } from "date-fns";
 import {
   tasks,
@@ -22,15 +22,22 @@ export function refresh() {
   refreshProjects();
   refreshTasks();
   addEditListeners();
+  addDeleteListeners();
 }
 
 function refreshProjects() {
   const projectsList = document.getElementById("projects-list");
+  const selectInput = document.getElementById("projects-select-input");
   projectsList.innerHTML = "";
+  selectInput.innerHTML = "";
+  const inbox = document.createElement("option");
+  inbox.value = inbox;
+  inbox.textContent = "Inbox";
+  selectInput.appendChild(inbox);
   for (let i = 0; i < projects.length; i++) {
     projectsList.appendChild(createProjectItemDiv(projects[i], i));
+    selectInput.appendChild(createOption(projects[i]));
   }
-  addDeleteProjectListeners();
 }
 
 function refreshTasks() {
@@ -39,16 +46,26 @@ function refreshTasks() {
   for (let i = 0; i < tasks.length; i++) {
     cardsContainer.appendChild(buildCard(tasks[i], i));
   }
-  addDeleteTaskListeners();
   addCheckboxListeners();
 }
 
-function addDeleteProjectListeners() {
-  const deleteBtns = document.querySelectorAll(".delete-project-icon");
+function addDeleteListeners() {
+  const deleteProjectBtns = document.querySelectorAll(".delete-project-icon");
+  const deleteTaskBtns = document.querySelectorAll(".delete-icon");
+  const deleteBtns = [...deleteTaskBtns, ...deleteProjectBtns];
   deleteBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
       let index = grabIndex(e);
-      removeEntity("project", index);
+      const entityType = icon.className.includes("delete-icon")
+        ? "task"
+        : "project";
+      if (entityType === "task") {
+        updateTaskForm(tasks[index]);
+        removeEntity("task", index);
+      } else {
+        updateProjectForm(projects[index]);
+        removeEntity("project", index);
+      }
     });
   });
 }
@@ -68,22 +85,14 @@ function addEditListeners() {
       if (entityType === "task") {
         updateTaskForm(tasks[index]);
         saveTaskBtn.innerText = "Save";
+        taskForm.setAttribute("data-index", index);
         taskModal.showModal();
       } else {
         updateProjectForm(projects[index]);
         saveProjectBtn.innerText = "Save";
+        projectForm.setAttribute("data-index", index);
         projectModal.showModal();
       }
-    });
-  });
-}
-
-function addDeleteTaskListeners() {
-  const deleteBtns = document.querySelectorAll(".delete-icon");
-  deleteBtns.forEach((icon) => {
-    icon.addEventListener("click", (e) => {
-      let index = grabIndex(e);
-      removeEntity("task", index);
     });
   });
 }
@@ -123,7 +132,8 @@ function updateProjectForm(currentTask) {
   projectForm.projectTitle.value = currentTask.projectTitle;
 }
 
-saveProjectBtn.addEventListener("click", (e) => {
+projectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   if (e.currentTarget.innerText.includes("Add")) {
     addProject();
   } else {
@@ -133,7 +143,8 @@ saveProjectBtn.addEventListener("click", (e) => {
   clearProjectForm();
 });
 
-saveTaskBtn.addEventListener("click", (e) => {
+taskForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   if (e.currentTarget.innerText.includes("Add")) {
     addTask();
   } else {
@@ -146,6 +157,8 @@ saveTaskBtn.addEventListener("click", (e) => {
 function removeEntity(entityType, index) {
   entityType === "task" ? tasks.splice(index, 1) : projects.splice(index, 1);
   updateStorageItem(entityType);
+  clearProjectForm();
+  clearTaskForm();
   refresh();
 }
 
@@ -163,4 +176,31 @@ export function clearProjectForm() {
 
 function grabIndex(e) {
   return Number(e.currentTarget.getAttribute("data-index"));
+}
+
+const defaultInbox = document.getElementById("inbox");
+const defaultToday = document.getElementById("today");
+const projectListItems = Array.from(document.querySelectorAll(".project-item"));
+console.log(projectListItems);
+
+defaultInbox.addEventListener("click", (e) => {
+  updateProjectTitleDisplay("Inbox");
+});
+
+defaultToday.addEventListener("click", (e) => {
+  let date = new Date();
+  updateProjectTitleDisplay("Today");
+});
+
+projectListItems.forEach((item) => {
+  item.addEventListener("click", (e) => {
+    let index = grabIndex(e);
+    console.log(projects[index].projectTitle);
+    updateProjectTitleDisplay(projects[index].projectTitle);
+  });
+});
+
+function updateProjectTitleDisplay(projectTitle) {
+  const projectTitleElement = document.getElementById("project-title");
+  projectTitleElement.textContent = projectTitle;
 }
