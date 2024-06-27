@@ -1,6 +1,7 @@
 import "./style.css";
 
 import { addTasks, addProjects } from "./state.js";
+import { changeProjectAddBtn, changeTaskAddBtn } from "./updateDisplay.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
@@ -17,7 +18,10 @@ navBarIcon.addEventListener("click", () => {
   navBar.classList.toggle("hidden");
 });
 
-addTaskIcon.addEventListener("click", () => taskModal.showModal());
+addTaskIcon.addEventListener("click", () => {
+  changeTaskAddBtn();
+  taskModal.showModal();
+});
 
 closeTaskModal.addEventListener("click", () => {
   clearTaskForm();
@@ -25,6 +29,7 @@ closeTaskModal.addEventListener("click", () => {
 });
 
 addProjectIcon.addEventListener("click", () => {
+  changeProjectAddBtn();
   projectModal.showModal();
 });
 

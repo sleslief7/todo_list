@@ -1,5 +1,6 @@
 import buildCard from "./buildCard.js";
 import { createProjectItemDiv } from "./projects.js";
+import { format } from "date-fns";
 import {
   tasks,
   projects,
@@ -10,6 +11,10 @@ import {
 
 const taskModal = document.getElementById("task-modal");
 const taskForm = document.getElementById("task-form");
+const projectModal = document.getElementById("project-dialog");
+const projectForm = document.getElementById("project-form");
+const saveTaskBtn = document.getElementById("save-task");
+const saveProjectBtn = document.getElementById("save-project");
 let isEditMode = false;
 
 export function refreshProjects() {
@@ -75,12 +80,16 @@ function addCheckboxListeners() {
       let index = Number(e.target.getAttribute("data-index"));
       let modifiedTask = tasks[index];
       modifiedTask.completed = checkbox.checked;
-      edit("tasks", index);
+      tasks[index] = modifiedTask;
+      updateStorageItem("tasks");
+      refreshTasks();
     });
   });
 }
 function edit(editItem, index) {
-  openTaskEditModal(index);
+  let editModalToOpen =
+    editItem === "tasks" ? openTaskEditModal : openProjectEditModal;
+  editModalToOpen(index);
   let formObj = editItem === "tasks" ? formToTaskObj : formToProjectObj;
   let editItemObj = editItem === "tasks" ? tasks[index] : projects[index];
   let refresh = editItem === "tasks" ? refreshTasks : refreshProjects;
@@ -89,17 +98,74 @@ function edit(editItem, index) {
   refresh();
 }
 function updateTaskForm(currentTask) {
+  let formatedDate = format(currentTask.taskDueDate, "yyyy-MM-dd");
   taskForm.taskTitle.value = currentTask.taskTitle;
   taskForm.taskDescription.value = currentTask.taskDescription;
-  taskForm.dueDate.value = currentTask.dueDate;
-  taskForm.priorityDropDown.value = currentTask.priorityDropDown;
-  taskForm.projectsDropDown.value = currentTask.projectsDropDown;
+  taskForm.dueDate.value = formatedDate;
+  taskForm.priorityDropDown.value = currentTask.taskPriority;
+  taskForm.projectsDropDown.value = currentTask.taskProject;
+}
+function updateProjectForm(currentTask) {
+  projectForm.projectTitle.value = currentTask.projectTitle;
 }
 export function openTaskEditModal(index) {
   isEditMode = true;
-  const currentTask = tasks[index];
-  updateTaskForm(currentTask);
+  changeTaskAddBtn();
+  updateTaskForm(tasks[index]);
   taskModal.showModal();
+}
+export function changeTaskAddBtn() {
+  const addBtn = document.getElementById("submit-task");
+  changeBtnCondition(saveTaskBtn, addBtn);
+}
+export function changeProjectAddBtn() {
+  const addBtn = document.getElementById("add-btn");
+  changeBtnCondition(saveProjectBtn, addBtn);
+}
+function changeBtnCondition(saveBtn, addBtn) {
+  if (isEditMode) {
+    saveBtn.classList.remove("hidden");
+    saveBtn.classList.add("show");
+    addBtn.classList.add("hidden");
+    addBtn.classList.remove("show");
+    isEditMode = false;
+  } else {
+    addBtn.classList.remove("hidden");
+    addBtn.classList.add("show");
+    saveBtn.classList.add("hidden");
+    saveBtn.classList.remove("show");
+  }
+}
+function updateTask(index) {
+  tasks[index] = formToTaskObj();
+  updateStorageItem("tasks");
+  refreshTasks();
+}
+function updateProject(index) {
+  projects[index] = formToProjectObj();
+  updateStorageItem("projects");
+  refreshProjects();
+}
+
+saveProjectBtn.addEventListener("click", (e) => {
+  const target = e.currentTarget;
+  let index = Number(target.getAttribute("data-index"));
+  updateProject(index);
+  projectModal.close();
+  clearProjectForm();
+});
+saveTaskBtn.addEventListener("click", (e) => {
+  const target = e.currentTarget;
+  let index = Number(target.getAttribute("data-index"));
+  updateTask(index);
+  taskModal.close();
+  clearTaskForm();
+});
+export function openProjectEditModal(index) {
+  isEditMode = true;
+  changeProjectAddBtn();
+  updateProjectForm(projects[index]);
+  projectModal.showModal();
 }
 const removeTask = (index) => {
   tasks.splice(index, 1);
@@ -111,4 +177,15 @@ function removeProject(index) {
   projects.splice(index, 1);
   updateStorageItem("projects");
   refreshProjects();
+}
+function clearTaskForm() {
+  taskForm.taskTitle.value = "";
+  taskForm.taskDescription.value = "";
+  taskForm.dueDate.value = "";
+  taskForm.priorityDropDown.value = "low";
+  taskForm.projectsDropDown.value = "inbox";
+}
+
+function clearProjectForm() {
+  projectForm.projectTitle.value = "";
 }
