@@ -31,7 +31,7 @@ function refreshProjects() {
   projectsList.innerHTML = "";
   selectInput.innerHTML = "";
   const inbox = document.createElement("option");
-  inbox.value = inbox;
+  inbox.value = "inbox";
   inbox.textContent = "Inbox";
   selectInput.appendChild(inbox);
   for (let i = 0; i < projects.length; i++) {
@@ -174,33 +174,6 @@ export function clearProjectForm() {
   projectForm.projectTitle.value = "";
 }
 
-function grabIndex(e) {
+export function grabIndex(e) {
   return Number(e.currentTarget.getAttribute("data-index"));
-}
-
-const defaultInbox = document.getElementById("inbox");
-const defaultToday = document.getElementById("today");
-const projectListItems = Array.from(document.querySelectorAll(".project-item"));
-console.log(projectListItems);
-
-defaultInbox.addEventListener("click", (e) => {
-  updateProjectTitleDisplay("Inbox");
-});
-
-defaultToday.addEventListener("click", (e) => {
-  let date = new Date();
-  updateProjectTitleDisplay("Today");
-});
-
-projectListItems.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    let index = grabIndex(e);
-    console.log(projects[index].projectTitle);
-    updateProjectTitleDisplay(projects[index].projectTitle);
-  });
-});
-
-function updateProjectTitleDisplay(projectTitle) {
-  const projectTitleElement = document.getElementById("project-title");
-  projectTitleElement.textContent = projectTitle;
 }
