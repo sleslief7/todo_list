@@ -1,6 +1,6 @@
 import "./style.css";
+import "./state.js";
 import { format } from "date-fns";
-import { projects } from "./state.js";
 import { clearTaskForm, refresh } from "./updateDisplay.js";
 
 const navBarIcon = document.getElementById("nav-bars");
@@ -39,36 +39,18 @@ closeProjectModal.addEventListener("click", () => {
 
 const defaultInbox = document.getElementById("inbox");
 const defaultToday = document.getElementById("today");
-const projectListItems = Array.from(document.querySelectorAll(".project-item"));
 
 defaultInbox.addEventListener("click", () => {
   updateProjectTitleDisplay("Inbox");
-  refresh((t) => {
-    return t.taskProject === "Inbox";
-  });
+  refresh((t) => t.taskProject === "Inbox");
 });
 
 defaultToday.addEventListener("click", () => {
-  let date = format(new Date(), "yyyy/MM/dd");
   updateProjectTitleDisplay("Today");
-  refresh((t) => {
-    return t.taskDueDate === date;
-  });
+  refresh((t) => t.taskDueDate === format(new Date(), "yyyy/MM/dd"));
 });
 
-projectListItems.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    let index = grabIndex(e);
-    console.log(index);
-    let projectName = projects[index].projectTitle;
-    updateProjectTitleDisplay(projectName);
-    refresh((t) => {
-      return t.taskProject === projectName;
-    });
-  });
-});
-
-export function updateProjectTitleDisplay(projectTitle) {
+function updateProjectTitleDisplay(projectTitle) {
   const projectTitleElement = document.getElementById("project-title");
   projectTitleElement.textContent = projectTitle;
 }

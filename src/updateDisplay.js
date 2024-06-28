@@ -38,6 +38,17 @@ function refreshProjects() {
     projectsList.appendChild(createProjectItemDiv(projects[i], i));
     selectInput.appendChild(createOption(projects[i]));
   }
+  AddProjectSelectListeners();
+}
+
+function AddProjectSelectListeners() {
+  document.querySelectorAll(".project-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      let projectName = projects[grabIndex(e)].projectTitle;
+      document.getElementById("project-title").textContent = projectName;
+      refresh((t) => t.taskProject === projectName);
+    });
+  });
 }
 
 function refreshTasks(toDisplay) {
