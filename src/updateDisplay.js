@@ -18,9 +18,9 @@ const projectForm = document.getElementById("project-form");
 const saveTaskBtn = document.getElementById("save-task");
 const saveProjectBtn = document.getElementById("save-project");
 
-export function refresh() {
+export function refresh(toDisplay) {
   refreshProjects();
-  refreshTasks();
+  refreshTasks(toDisplay);
   addEditListeners();
   addDeleteListeners();
 }
@@ -31,7 +31,7 @@ function refreshProjects() {
   projectsList.innerHTML = "";
   selectInput.innerHTML = "";
   const inbox = document.createElement("option");
-  inbox.value = "inbox";
+  inbox.value = "Inbox";
   inbox.textContent = "Inbox";
   selectInput.appendChild(inbox);
   for (let i = 0; i < projects.length; i++) {
@@ -40,11 +40,13 @@ function refreshProjects() {
   }
 }
 
-function refreshTasks() {
+function refreshTasks(toDisplay) {
   const cardsContainer = document.getElementById("cards-container");
   cardsContainer.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
-    cardsContainer.appendChild(buildCard(tasks[i], i));
+    if (!toDisplay || toDisplay(tasks[i])) {
+      cardsContainer.appendChild(buildCard(tasks[i], i));
+    }
   }
   addCheckboxListeners();
 }

@@ -18,7 +18,7 @@ export function createProjectItemDiv(project, index) {
 export function createOption(project) {
   const { projectTitle } = project;
   const option = document.createElement("option");
-  option.value = projectTitle.toLowerCase().replaceAll(" ", "-");
+  option.value = projectTitle;
   option.textContent = projectTitle;
 
   return option;

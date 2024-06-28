@@ -1,6 +1,7 @@
 import "./style.css";
+import { format } from "date-fns";
 import { projects } from "./state.js";
-import { clearTaskForm, grabIndex, refresh } from "./updateDisplay.js";
+import { clearTaskForm, refresh } from "./updateDisplay.js";
 
 const navBarIcon = document.getElementById("nav-bars");
 const navBar = document.getElementById("nav-bar");
@@ -40,23 +41,34 @@ const defaultInbox = document.getElementById("inbox");
 const defaultToday = document.getElementById("today");
 const projectListItems = Array.from(document.querySelectorAll(".project-item"));
 
-defaultInbox.addEventListener("click", (e) => {
+defaultInbox.addEventListener("click", () => {
   updateProjectTitleDisplay("Inbox");
+  refresh((t) => {
+    return t.taskProject === "Inbox";
+  });
 });
 
-defaultToday.addEventListener("click", (e) => {
-  let date = new Date();
+defaultToday.addEventListener("click", () => {
+  let date = format(new Date(), "yyyy/MM/dd");
   updateProjectTitleDisplay("Today");
+  refresh((t) => {
+    return t.taskDueDate === date;
+  });
 });
 
 projectListItems.forEach((item) => {
   item.addEventListener("click", (e) => {
     let index = grabIndex(e);
-    updateProjectTitleDisplay(projects[index].projectTitle);
+    console.log(index);
+    let projectName = projects[index].projectTitle;
+    updateProjectTitleDisplay(projectName);
+    refresh((t) => {
+      return t.taskProject === projectName;
+    });
   });
 });
 
-function updateProjectTitleDisplay(projectTitle) {
+export function updateProjectTitleDisplay(projectTitle) {
   const projectTitleElement = document.getElementById("project-title");
   projectTitleElement.textContent = projectTitle;
 }
