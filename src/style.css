@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: "DMSans";
   src: url("./assets/DMSans-Regular.ttf");
@@ -26,6 +30,14 @@ body {
   margin: 0;
   position: relative;
   top: 80px;
+}
+h1 {
+  font-size: 1.7rem;
+  font-weight: 900;
+}
+h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
 }
 header,
 footer {
