@@ -17,6 +17,7 @@ const projectModal = document.getElementById("project-dialog");
 const projectForm = document.getElementById("project-form");
 const saveTaskBtn = document.getElementById("save-task");
 const saveProjectBtn = document.getElementById("save-project");
+let currentTab = "Inbox";
 
 export function refresh(toDisplay) {
   refreshProjects();
@@ -33,6 +34,7 @@ function refreshProjects() {
   const inbox = document.createElement("option");
   inbox.value = "Inbox";
   inbox.textContent = "Inbox";
+  inbox.selected = "selected";
   selectInput.appendChild(inbox);
   for (let i = 0; i < projects.length; i++) {
     projectsList.appendChild(createProjectItemDiv(projects[i], i));
@@ -46,7 +48,8 @@ function AddProjectSelectListeners() {
     item.addEventListener("click", (e) => {
       let projectName = projects[grabIndex(e)].projectTitle;
       document.getElementById("project-title").textContent = projectName;
-      refresh((t) => t.taskProject === projectName);
+      setCurrentTab(projectName);
+      refresh();
     });
   });
 }
@@ -55,6 +58,7 @@ function refreshTasks(toDisplay) {
   const cardsContainer = document.getElementById("cards-container");
   cardsContainer.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].taskProject !== currentTab && currentTab) continue;
     if (!toDisplay || toDisplay(tasks[i])) {
       cardsContainer.appendChild(buildCard(tasks[i], i));
     }
@@ -189,4 +193,8 @@ export function clearProjectForm() {
 
 export function grabIndex(e) {
   return Number(e.currentTarget.getAttribute("data-index"));
+}
+
+export function setCurrentTab(tab) {
+  currentTab = tab;
 }
