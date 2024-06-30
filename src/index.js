@@ -1,6 +1,5 @@
 import "./style.css";
 import "./state.js";
-import { format } from "date-fns";
 import { clearTaskForm, refresh, setCurrentTab } from "./updateDisplay.js";
 
 const navBarIcon = document.getElementById("nav-bars");
@@ -41,18 +40,11 @@ const defaultInbox = document.getElementById("inbox");
 const defaultToday = document.getElementById("today");
 
 defaultInbox.addEventListener("click", () => {
-  updateProjectTitleDisplay("Inbox");
   setCurrentTab("Inbox");
   refresh();
 });
 
 defaultToday.addEventListener("click", () => {
-  updateProjectTitleDisplay("Today");
   setCurrentTab(null);
-  refresh((t) => t.taskDueDate === format(new Date(), "yyyy/MM/dd"));
+  refresh();
 });
-
-function updateProjectTitleDisplay(projectTitle) {
-  const projectTitleElement = document.getElementById("project-title");
-  projectTitleElement.textContent = projectTitle;
-}
