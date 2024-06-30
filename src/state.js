@@ -4,11 +4,11 @@ import { refresh } from "./updateDisplay.js";
 const taskForm = document.getElementById("task-form");
 const projectForm = document.getElementById("project-form");
 
-export const getStorageItem = (item) => {
+export function getStorageItem(item, defaultVal = []) {
   const serializedList = localStorage.getItem(item);
-  if (serializedList === null) return [];
+  if (serializedList === null) return defaultVal;
   return JSON.parse(serializedList);
-};
+}
 
 export const tasks = getStorageItem("task");
 export const projects = getStorageItem("project");

@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import {
   tasks,
   projects,
+  getStorageItem,
   updateStorageItem,
   formToTaskObj,
   formToProjectObj,
@@ -17,13 +18,19 @@ const projectModal = document.getElementById("project-dialog");
 const projectForm = document.getElementById("project-form");
 const saveTaskBtn = document.getElementById("save-task");
 const saveProjectBtn = document.getElementById("save-project");
-let currentTab = "Inbox";
+let currentTab = getStorageItem("currentTab", "Inbox");
 
 export function refresh(toDisplay) {
+  updateProjectTitleDisplay(currentTab);
   refreshProjects();
   refreshTasks(toDisplay);
   addEditListeners();
   addDeleteListeners();
+}
+
+function updateProjectTitleDisplay(projectTitle) {
+  const projectTitleElement = document.getElementById("project-title");
+  projectTitleElement.textContent = projectTitle ?? "Today";
 }
 
 function refreshProjects() {
@@ -47,7 +54,6 @@ function AddProjectSelectListeners() {
   document.querySelectorAll(".project-item").forEach((item) => {
     item.addEventListener("click", (e) => {
       let projectName = projects[grabIndex(e)].projectTitle;
-      document.getElementById("project-title").textContent = projectName;
       setCurrentTab(projectName);
       refresh();
     });
@@ -59,6 +65,7 @@ function refreshTasks(toDisplay) {
   cardsContainer.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].taskProject !== currentTab && currentTab) continue;
+    if (currentTab === null) toDisplay = todaysFilter;
     if (!toDisplay || toDisplay(tasks[i])) {
       cardsContainer.appendChild(buildCard(tasks[i], i));
     }
@@ -197,4 +204,9 @@ export function grabIndex(e) {
 
 export function setCurrentTab(tab) {
   currentTab = tab;
+  localStorage.setItem("currentTab", JSON.stringify(currentTab));
+}
+
+function todaysFilter(t) {
+  return t.taskDueDate === format(new Date(), "yyyy/MM/dd");
 }
