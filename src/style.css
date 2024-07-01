@@ -83,16 +83,18 @@ nav {
   border-right: 1px solid var(--third-color);
 }
 .default-nav-items:not(:last-child),
-.project-list-item {
+.project-item {
   cursor: pointer;
   transition: 0.3s;
   padding: 3px;
   border-radius: 5px;
   border-bottom: 2px solid transparent;
   color: var(--fourth-color);
+  padding-right: 6px;
+  margin-top: 4px;
 }
 .default-nav-items:hover:not(:last-child),
-.project-list-item:hover {
+.project-item:hover {
   border-bottom: 2px solid var(--secondary-color);
   background-color: var(--opacity-color);
   color: var(--third-color);
@@ -280,4 +282,18 @@ nav {
 }
 .doneTask {
   text-decoration: line-through;
+}
+#save-task {
+  text-align: center;
+}
+#task-form,
+#project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+label[for="project-name"] {
+  text-align: center;
+  font-weight: 700;
 }

@@ -3,6 +3,7 @@ import { createProjectItemDiv, createOption } from "./projects.js";
 import { format } from "date-fns";
 import {
   tasks,
+  setTasks,
   projects,
   getStorageItem,
   updateStorageItem,
@@ -79,6 +80,7 @@ function addDeleteListeners() {
   const deleteBtns = [...deleteTaskBtns, ...deleteProjectBtns];
   deleteBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
+      e.stopPropagation();
       let index = grabIndex(e);
       const entityType = icon.className.includes("delete-icon")
         ? "task"
@@ -87,8 +89,16 @@ function addDeleteListeners() {
         updateTaskForm(tasks[index]);
         removeEntity("task", index);
       } else {
+        let newTasks = tasks.filter(
+          (t) => t.taskProject !== projects[index].projectTitle
+        );
+        setTasks(newTasks);
         updateProjectForm(projects[index]);
+        updateStorageItem("task");
+        updateStorageItem("project");
         removeEntity("project", index);
+        setCurrentTab("Inbox");
+        refresh();
       }
     });
   });
@@ -102,6 +112,7 @@ function addEditListeners() {
   const editBtns = [...editTaskBtns, ...editProjectBtns];
   editBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
+      e.stopPropagation();
       const index = grabIndex(e);
       const entityType = icon.className.includes("edit-icon")
         ? "task"
@@ -170,6 +181,7 @@ projectForm.addEventListener("submit", (e) => {
 taskForm.addEventListener("submit", (e) => {
   e.preventDefault();
   if (e.currentTarget.innerText.includes("Add")) {
+    setCurrentTab(taskForm.projectsDropDown.value);
     addTask();
   } else {
     editEntity(formToTaskObj(), "task", grabIndex(e));

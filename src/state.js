@@ -10,7 +10,7 @@ export function getStorageItem(item, defaultVal = []) {
   return JSON.parse(serializedList);
 }
 
-export const tasks = getStorageItem("task");
+export let tasks = getStorageItem("task");
 export const projects = getStorageItem("project");
 refresh();
 
@@ -45,4 +45,8 @@ export function addProject() {
   projects.push(project);
   updateStorageItem("project");
   refresh();
+}
+
+export function setTasks(newTasks) {
+  tasks = newTasks;
 }

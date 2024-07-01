@@ -51,9 +51,9 @@
             <div id="priority-div">
               <label for="priority-input">Priority</label>
               <select name="priorityDropDown" id="priority-input">
-                <option value="low" selected>Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="Low" selected>Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
             </div>
             <div id="project-select-div">
@@ -64,7 +64,12 @@
               ></select>
             </div>
           </div>
-          <button id="save-task" class="bg-white p-1 px-2 rounded">Save</button>
+          <button
+            id="save-task"
+            class="bg-white p-1 px-2 rounded-xl ml-1 hover:bg-pink-500"
+          >
+            Save
+          </button>
         </form>
       </dialog>
     </header>
@@ -84,16 +89,20 @@
               <div id="project-dialog-div">
                 <i class="fa-solid fa-xmark" id="close-project-modal"></i>
                 <form id="project-form">
-                  <label for="project-name">Project name</label>
+                  <label for="project-name">*Project name</label>
                   <input
                     type="text"
                     name="projectTitle"
                     id="project-name"
                     maxlength="35"
                     minlength="1"
+                    class="p-1"
                     required
                   />
-                  <button id="save-project" class="bg-white p-1 px-2 rounded">
+                  <button
+                    id="save-project"
+                    class="bg-white p-1 px-2 rounded-xl ml-1 hover:bg-pink-500"
+                  >
                     Save
                   </button>
                 </form>
