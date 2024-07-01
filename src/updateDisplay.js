@@ -96,9 +96,8 @@ function addDeleteListeners() {
         updateProjectForm(projects[index]);
         updateStorageItem("task");
         updateStorageItem("project");
-        removeEntity("project", index);
         setCurrentTab("Inbox");
-        refresh();
+        removeEntity("project", index);
       }
     });
   });
