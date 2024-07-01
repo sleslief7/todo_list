@@ -79,6 +79,7 @@ function addDeleteListeners() {
   const deleteBtns = [...deleteTaskBtns, ...deleteProjectBtns];
   deleteBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
+      e.stopPropagation();
       let index = grabIndex(e);
       const entityType = icon.className.includes("delete-icon")
         ? "task"
@@ -102,6 +103,7 @@ function addEditListeners() {
   const editBtns = [...editTaskBtns, ...editProjectBtns];
   editBtns.forEach((icon) => {
     icon.addEventListener("click", (e) => {
+      e.stopPropagation();
       const index = grabIndex(e);
       const entityType = icon.className.includes("edit-icon")
         ? "task"
