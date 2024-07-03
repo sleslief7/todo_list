@@ -2,8 +2,8 @@ export function Task(
   taskTitle,
   taskDescription,
   taskDueDate,
-  taskPriority = "low",
-  taskProject = "inbox",
+  taskPriority = 'low',
+  taskProject = 'inbox',
   completed = false
 ) {
   this.taskTitle = taskTitle;

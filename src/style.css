@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "DMSans";
-  src: url("./assets/DMSans-Regular.ttf");
+  font-family: 'DMSans';
+  src: url('./assets/DMSans-Regular.ttf');
   font-style: normal;
   font-weight: 200;
 }
@@ -19,7 +19,7 @@
   box-sizing: border-box;
 }
 body {
-  font-family: "DMSans", sans-serif;
+  font-family: 'DMSans', sans-serif;
   color: var(--fourth-color);
   background-color: var(--primary-color);
   display: flex;
@@ -293,7 +293,7 @@ nav {
   gap: 10px;
   justify-content: center;
 }
-label[for="project-name"] {
+label[for='project-name'] {
   text-align: center;
   font-weight: 700;
 }

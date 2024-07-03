@@ -1,8 +1,8 @@
 export function createProjectItemDiv(project, index) {
   const { projectTitle } = project;
-  const listItem = document.createElement("div");
-  listItem.classList.add("project-item");
-  listItem.setAttribute("data-index", index);
+  const listItem = document.createElement('div');
+  listItem.classList.add('project-item');
+  listItem.setAttribute('data-index', index);
   listItem.innerHTML = `
             <div class="project-list-item" data-index="${index}">
               <i class="fa-solid fa-hashtag"></i> <span class="project-title">${projectTitle}</span>
@@ -17,7 +17,7 @@ export function createProjectItemDiv(project, index) {
 
 export function createOption(project) {
   const { projectTitle } = project;
-  const option = document.createElement("option");
+  const option = document.createElement('option');
   option.value = projectTitle;
   option.textContent = projectTitle;
 

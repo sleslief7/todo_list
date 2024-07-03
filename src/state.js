@@ -1,8 +1,8 @@
-import { Task, Project } from "./models.js";
-import { refresh } from "./updateDisplay.js";
+import { Task, Project } from './models.js';
+import { refresh } from './updateDisplay.js';
 
-const taskForm = document.getElementById("task-form");
-const projectForm = document.getElementById("project-form");
+const taskForm = document.getElementById('task-form');
+const projectForm = document.getElementById('project-form');
 
 export function getStorageItem(item, defaultVal = []) {
   const serializedList = localStorage.getItem(item);
@@ -10,12 +10,12 @@ export function getStorageItem(item, defaultVal = []) {
   return JSON.parse(serializedList);
 }
 
-export let tasks = getStorageItem("task");
-export const projects = getStorageItem("project");
+export let tasks = getStorageItem('task');
+export const projects = getStorageItem('project');
 refresh();
 
 export const updateStorageItem = (item) => {
-  let itemSerialized = JSON.stringify(item === "task" ? tasks : projects);
+  let itemSerialized = JSON.stringify(item === 'task' ? tasks : projects);
   localStorage.setItem(item, itemSerialized);
 };
 
@@ -23,7 +23,7 @@ export function formToTaskObj() {
   return new Task(
     taskForm.taskTitle.value,
     taskForm.taskDescription.value,
-    taskForm.dueDate.value.replaceAll("-", "/"),
+    taskForm.dueDate.value.replaceAll('-', '/'),
     taskForm.priorityDropDown.value,
     taskForm.projectsDropDown.value
   );
@@ -36,14 +36,14 @@ export function formToProjectObj() {
 export function addTask() {
   const task = formToTaskObj();
   tasks.push(task);
-  updateStorageItem("task");
+  updateStorageItem('task');
   refresh();
 }
 
 export function addProject() {
   const project = formToProjectObj();
   projects.push(project);
-  updateStorageItem("project");
+  updateStorageItem('project');
   refresh();
 }
 

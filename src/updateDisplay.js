@@ -1,6 +1,6 @@
-import buildCard from "./buildCard.js";
-import { createProjectItemDiv, createOption } from "./projects.js";
-import { format } from "date-fns";
+import buildCard from './buildCard.js';
+import { createProjectItemDiv, createOption } from './projects.js';
+import { format } from 'date-fns';
 import {
   tasks,
   setTasks,
@@ -11,15 +11,15 @@ import {
   formToProjectObj,
   addTask,
   addProject,
-} from "./state.js";
+} from './state.js';
 
-const taskModal = document.getElementById("task-modal");
-const taskForm = document.getElementById("task-form");
-const projectModal = document.getElementById("project-dialog");
-const projectForm = document.getElementById("project-form");
-const saveTaskBtn = document.getElementById("save-task");
-const saveProjectBtn = document.getElementById("save-project");
-let currentTab = getStorageItem("currentTab", "Inbox");
+const taskModal = document.getElementById('task-modal');
+const taskForm = document.getElementById('task-form');
+const projectModal = document.getElementById('project-dialog');
+const projectForm = document.getElementById('project-form');
+const saveTaskBtn = document.getElementById('save-task');
+const saveProjectBtn = document.getElementById('save-project');
+let currentTab = getStorageItem('currentTab', 'Inbox');
 
 export function refresh(toDisplay) {
   updateProjectTitleDisplay(currentTab);
@@ -30,19 +30,19 @@ export function refresh(toDisplay) {
 }
 
 function updateProjectTitleDisplay(projectTitle) {
-  const projectTitleElement = document.getElementById("project-title");
-  projectTitleElement.textContent = projectTitle ?? "Today";
+  const projectTitleElement = document.getElementById('project-title');
+  projectTitleElement.textContent = projectTitle ?? 'Today';
 }
 
 function refreshProjects() {
-  const projectsList = document.getElementById("projects-list");
-  const selectInput = document.getElementById("projects-select-input");
-  projectsList.innerHTML = "";
-  selectInput.innerHTML = "";
-  const inbox = document.createElement("option");
-  inbox.value = "Inbox";
-  inbox.textContent = "Inbox";
-  inbox.selected = "selected";
+  const projectsList = document.getElementById('projects-list');
+  const selectInput = document.getElementById('projects-select-input');
+  projectsList.innerHTML = '';
+  selectInput.innerHTML = '';
+  const inbox = document.createElement('option');
+  inbox.value = 'Inbox';
+  inbox.textContent = 'Inbox';
+  inbox.selected = 'selected';
   selectInput.appendChild(inbox);
   for (let i = 0; i < projects.length; i++) {
     projectsList.appendChild(createProjectItemDiv(projects[i], i));
@@ -52,8 +52,8 @@ function refreshProjects() {
 }
 
 function AddProjectSelectListeners() {
-  document.querySelectorAll(".project-item").forEach((item) => {
-    item.addEventListener("click", (e) => {
+  document.querySelectorAll('.project-item').forEach((item) => {
+    item.addEventListener('click', (e) => {
       let projectName = projects[grabIndex(e)].projectTitle;
       setCurrentTab(projectName);
       refresh();
@@ -62,8 +62,8 @@ function AddProjectSelectListeners() {
 }
 
 function refreshTasks(toDisplay) {
-  const cardsContainer = document.getElementById("cards-container");
-  cardsContainer.innerHTML = "";
+  const cardsContainer = document.getElementById('cards-container');
+  cardsContainer.innerHTML = '';
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].taskProject !== currentTab && currentTab) continue;
     if (currentTab === null) toDisplay = todaysFilter;
@@ -75,56 +75,56 @@ function refreshTasks(toDisplay) {
 }
 
 function addDeleteListeners() {
-  const deleteProjectBtns = document.querySelectorAll(".delete-project-icon");
-  const deleteTaskBtns = document.querySelectorAll(".delete-icon");
+  const deleteProjectBtns = document.querySelectorAll('.delete-project-icon');
+  const deleteTaskBtns = document.querySelectorAll('.delete-icon');
   const deleteBtns = [...deleteTaskBtns, ...deleteProjectBtns];
   deleteBtns.forEach((icon) => {
-    icon.addEventListener("click", (e) => {
+    icon.addEventListener('click', (e) => {
       e.stopPropagation();
       let index = grabIndex(e);
-      const entityType = icon.className.includes("delete-icon")
-        ? "task"
-        : "project";
-      if (entityType === "task") {
+      const entityType = icon.className.includes('delete-icon')
+        ? 'task'
+        : 'project';
+      if (entityType === 'task') {
         updateTaskForm(tasks[index]);
-        removeEntity("task", index);
+        removeEntity('task', index);
       } else {
         let newTasks = tasks.filter(
           (t) => t.taskProject !== projects[index].projectTitle
         );
         setTasks(newTasks);
         updateProjectForm(projects[index]);
-        updateStorageItem("task");
-        updateStorageItem("project");
-        setCurrentTab("Inbox");
-        removeEntity("project", index);
+        updateStorageItem('task');
+        updateStorageItem('project');
+        setCurrentTab('Inbox');
+        removeEntity('project', index);
       }
     });
   });
 }
 
 function addEditListeners() {
-  const editTaskBtns = Array.from(document.querySelectorAll(".edit-icon"));
+  const editTaskBtns = Array.from(document.querySelectorAll('.edit-icon'));
   const editProjectBtns = Array.from(
-    document.querySelectorAll(".edit-project-icon")
+    document.querySelectorAll('.edit-project-icon')
   );
   const editBtns = [...editTaskBtns, ...editProjectBtns];
   editBtns.forEach((icon) => {
-    icon.addEventListener("click", (e) => {
+    icon.addEventListener('click', (e) => {
       e.stopPropagation();
       const index = grabIndex(e);
-      const entityType = icon.className.includes("edit-icon")
-        ? "task"
-        : "project";
-      if (entityType === "task") {
+      const entityType = icon.className.includes('edit-icon')
+        ? 'task'
+        : 'project';
+      if (entityType === 'task') {
         updateTaskForm(tasks[index]);
-        saveTaskBtn.innerText = "Save";
-        taskForm.setAttribute("data-index", index);
+        saveTaskBtn.innerText = 'Save';
+        taskForm.setAttribute('data-index', index);
         taskModal.showModal();
       } else {
         updateProjectForm(projects[index]);
-        saveProjectBtn.innerText = "Save";
-        projectForm.setAttribute("data-index", index);
+        saveProjectBtn.innerText = 'Save';
+        projectForm.setAttribute('data-index', index);
         projectModal.showModal();
       }
     });
@@ -132,19 +132,19 @@ function addEditListeners() {
 }
 
 function addCheckboxListeners() {
-  const checkboxes = document.querySelectorAll(".checkbox");
+  const checkboxes = document.querySelectorAll('.checkbox');
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("click", (e) => {
+    checkbox.addEventListener('click', (e) => {
       let index = grabIndex(e);
       let modifiedTask = tasks[index];
       modifiedTask.completed = checkbox.checked;
-      editEntity(modifiedTask, "task", index);
+      editEntity(modifiedTask, 'task', index);
     });
   });
 }
 
 function editEntity(entity, entityType, index) {
-  if (entityType === "task") {
+  if (entityType === 'task') {
     tasks[index] = entity;
   } else {
     projects[index] = entity;
@@ -154,7 +154,7 @@ function editEntity(entity, entityType, index) {
 }
 
 function updateTaskForm(currentTask) {
-  let formatedDate = format(currentTask.taskDueDate, "yyyy-MM-dd");
+  let formatedDate = format(currentTask.taskDueDate, 'yyyy-MM-dd');
   taskForm.taskTitle.value = currentTask.taskTitle;
   taskForm.taskDescription.value = currentTask.taskDescription;
   taskForm.dueDate.value = formatedDate;
@@ -166,31 +166,31 @@ function updateProjectForm(currentTask) {
   projectForm.projectTitle.value = currentTask.projectTitle;
 }
 
-projectForm.addEventListener("submit", (e) => {
+projectForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  if (e.currentTarget.innerText.includes("Add")) {
+  if (e.currentTarget.innerText.includes('Add')) {
     addProject();
   } else {
-    editEntity(formToProjectObj(), "project", grabIndex(e));
+    editEntity(formToProjectObj(), 'project', grabIndex(e));
   }
   projectModal.close();
   clearProjectForm();
 });
 
-taskForm.addEventListener("submit", (e) => {
+taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  if (e.currentTarget.innerText.includes("Add")) {
+  if (e.currentTarget.innerText.includes('Add')) {
     setCurrentTab(taskForm.projectsDropDown.value);
     addTask();
   } else {
-    editEntity(formToTaskObj(), "task", grabIndex(e));
+    editEntity(formToTaskObj(), 'task', grabIndex(e));
   }
   taskModal.close();
   clearTaskForm();
 });
 
 function removeEntity(entityType, index) {
-  entityType === "task" ? tasks.splice(index, 1) : projects.splice(index, 1);
+  entityType === 'task' ? tasks.splice(index, 1) : projects.splice(index, 1);
   updateStorageItem(entityType);
   clearProjectForm();
   clearTaskForm();
@@ -198,26 +198,26 @@ function removeEntity(entityType, index) {
 }
 
 export function clearTaskForm() {
-  taskForm.taskTitle.value = "";
-  taskForm.taskDescription.value = "";
-  taskForm.dueDate.value = "";
-  taskForm.priorityDropDown.value = "low";
-  taskForm.projectsDropDown.value = "inbox";
+  taskForm.taskTitle.value = '';
+  taskForm.taskDescription.value = '';
+  taskForm.dueDate.value = '';
+  taskForm.priorityDropDown.value = 'low';
+  taskForm.projectsDropDown.value = 'inbox';
 }
 
 export function clearProjectForm() {
-  projectForm.projectTitle.value = "";
+  projectForm.projectTitle.value = '';
 }
 
 export function grabIndex(e) {
-  return Number(e.currentTarget.getAttribute("data-index"));
+  return Number(e.currentTarget.getAttribute('data-index'));
 }
 
 export function setCurrentTab(tab) {
   currentTab = tab;
-  localStorage.setItem("currentTab", JSON.stringify(currentTab));
+  localStorage.setItem('currentTab', JSON.stringify(currentTab));
 }
 
 function todaysFilter(t) {
-  return t.taskDueDate === format(new Date(), "yyyy/MM/dd");
+  return t.taskDueDate === format(new Date(), 'yyyy/MM/dd');
 }
